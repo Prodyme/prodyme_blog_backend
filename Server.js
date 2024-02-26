@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require("dotenv").config()
 const userRoutes= require('./routes/loginRoutes')
+const blogRoutes= require('./routes/blogRoutes')
 
 
 const app = express()
@@ -12,6 +13,7 @@ app.use(cors())
 const PORT= process.env.PORT || 5000
 
 app.use('/auth',userRoutes)
+app.use('/blogs',blogRoutes)
 
 app.listen(PORT,()=>console.log("Server started at Port "+PORT))
 
