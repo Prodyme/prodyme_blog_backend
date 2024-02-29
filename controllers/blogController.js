@@ -11,24 +11,20 @@ module.exports.getBlogs = async (req, resp) => {
 
         const categoryMap = {};
         categoriesData.forEach(category => {
-            categoryMap[category.id] = category.name;
+            categoryMap[category.id] = { name: category.name, id: category.id, posts: [] };
         });
 
-        const structuredData = {};
         postsData.forEach(post => {
             post.categories.forEach(categoryId => {
-                const categoryName = categoryMap[categoryId];
-                if (structuredData.hasOwnProperty(categoryName)) {
-                    structuredData[categoryName].push(post);
-                } else {
-                    structuredData[categoryName] = [post];
-                }
+                const { name, id } = categoryMap[categoryId];
+                categoryMap[categoryId].posts.push({ ...post, categoryId: id });
             });
         });
 
-        const result = Object.entries(structuredData).map(([categoryName, posts]) => ({
-            categoryname: categoryName,
-            posts: posts
+        const result = Object.values(categoryMap).map(category => ({
+            categoryname: category.name,
+            categoryid: category.id,
+            posts: category.posts
         }));
 
         resp.status(200).json(result);
