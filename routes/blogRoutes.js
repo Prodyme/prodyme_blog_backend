@@ -3,7 +3,7 @@ const { getBlogs, getBlog, searchBlogs, getCategories } = require('../controller
 const routes= express.Router()
 
 routes.get('/',getBlogs)
-routes.get('/blog',getsBlog)
+routes.get('/blog',getBlog)
 routes.get('/search', searchBlogs)
 routes.get('/categories',getCategories)
 
