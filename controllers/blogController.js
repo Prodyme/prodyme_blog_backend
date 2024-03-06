@@ -38,10 +38,10 @@ module.exports.getBlogs = async (req, resp) => {
     resp.status(500).json({ error: "Internal Server Error" });
   }
 };
-module.exports.getBlog = async (req, resp) => {
+module.exports.getsBlog = async (req, resp) => {
   const { slug } = req.query;
   try {
-    const result = await axios.get(process.env.POSTS_URL + `?slug=${slug}`);
+    const result = await axios.get(process.env.SLUG_URL + `?slug=${slug}`);
     // console.log(result.data);
     const data = result.data; // Extracting data from Axios response
     resp.status(200).json(data);
@@ -53,8 +53,7 @@ module.exports.getBlog = async (req, resp) => {
 
 // Code for search functionality
 // Replace base url with env variable
-const baseURL =
-  "https://public-api.wordpress.com/wp/v2/sites/amansamant23.wordpress.com/posts";
+const baseURL =process.env.BASE_URL
 
 async function fetchCategories() {
   const url = process.env.CATEGORIES_URL + "?_fields=id,name";
@@ -286,7 +285,7 @@ module.exports.searchBlogs = async (req, resp) => {
     }, []);
     resp.status(200).json(uniqueMergedData);
   } catch (error) {
-    console.log(err);
+    console.log(error);
     resp.status(500).json({ error: "Internal Server Error" });
   }
 };
