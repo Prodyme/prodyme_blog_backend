@@ -4,7 +4,7 @@ const cors = require('cors');
 require("dotenv").config()
 const userRoutes= require('./routes/loginRoutes')
 const blogRoutes= require('./routes/blogRoutes')
-
+const productRoutes= require('./routes/productRoutes')
 
 const app = express()
 app.use(express.json())
@@ -14,6 +14,7 @@ const PORT= process.env.PORT || 5000
 
 app.use('/auth',userRoutes)
 app.use('/blogs',blogRoutes)
+app.use('/products',productRoutes)
 
 app.listen(PORT,()=>console.log("Server started at Port "+PORT))
 
