@@ -10,13 +10,13 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-const PORT= process.env.PORT || 5000
+// const PORT= process.env.PORT || 5000
 
 app.use('/auth',userRoutes)
 app.use('/blogs',blogRoutes)
 app.use('/products',productRoutes)
 
-app.listen(PORT,()=>console.log("Server started at Port "+PORT))
+// app.listen(PORT,()=>console.log("Server started at Port "+PORT))
 
 mongoose.connect(process.env.MONGO_URI,{
     dbName:process.env.DB_NAME,
@@ -30,3 +30,5 @@ mongoose.connection.on("connected",()=>{
 mongoose.connection.on("error",(err)=>{
     console.error("Error connecting to database",err)
 })
+
+module.exports = app;

@@ -1,0 +1,44 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: prodyme-blogs-backend-server
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: ap-south-1
+
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http: ANY /{proxy+}
+      - http: ANY /
+    environment:
+      MONGO_URI: mongodb+srv://finance:7hvuo5Bs1vgVd9RW@prodyme.7yperer.mongodb.net/?retryWrites=true&w=majority
+      DB_NAME: prodymeEcommerce
+      JWT_SECRET: prodyme
+      POSTS_URL: https://public-api.wordpress.com/wp/v2/sites/amansamant23.wordpress.com/posts
+      CATEGORIES_URL: https://public-api.wordpress.com/wp/v2/sites/amansamant23.wordpress.com/categories
+      TAGS_URL: https://public-api.wordpress.com/wp/v2/sites/amansamant23.wordpress.com/tags
+      PRODUCTS_URL: https://efbxl74e21.execute-api.ap-south-1.amazonaws.com/dev
+      SLUG_URL: https://public-api.wordpress.com/wp/v2/sites/amansamant23.wordpress.com/posts
