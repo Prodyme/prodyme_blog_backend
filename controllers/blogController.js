@@ -53,8 +53,7 @@ module.exports.getsBlog = async (req, resp) => {
 
 // Code for search functionality
 // Replace base url with env variable
-const baseURL =
-  "https://public-api.wordpress.com/wp/v2/sites/amansamant23.wordpress.com/posts";
+const baseURL =process.env.BASE_URL
 
 async function fetchCategories() {
   const url = process.env.CATEGORIES_URL + "?_fields=id,name";
@@ -286,7 +285,7 @@ module.exports.searchBlogs = async (req, resp) => {
     }, []);
     resp.status(200).json(uniqueMergedData);
   } catch (error) {
-    console.log(err);
+    console.log(error);
     resp.status(500).json({ error: "Internal Server Error" });
   }
 };
