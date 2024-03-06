@@ -53,7 +53,7 @@ module.exports.getBlog = async (req, resp) => {
 
 // Code for search functionality
 // Replace base url with env variable
-const baseURL =process.env.BASE_URL
+const baseURL = process.env.BASE_URL;
 
 async function fetchCategories() {
   const url = process.env.CATEGORIES_URL + "?_fields=id,name";
@@ -122,7 +122,6 @@ async function fetchTags() {
 //   mythology: 5174,
 // };
 
-
 const searchByCategory = async (categoryName) => {
   // Convert the input category name to lowercase
   const lowerCategoryName = categoryName.toLowerCase();
@@ -188,7 +187,6 @@ const searchByCategory = async (categoryName) => {
     return [];
   }
 };
-
 
 const searchByTags = async (tagsName) => {
   // Convert the input tags name to lowercase
@@ -290,13 +288,12 @@ module.exports.searchBlogs = async (req, resp) => {
   }
 };
 
-
-
 // Categories fetching api
 
-module.exports.getCategories = async (req,resp) => {
-  const {categoryId} = req.query;
-  const url = process.env.CATEGORIES_URL + `?_fields=name&include=${categoryId}`;
+module.exports.getCategories = async (req, resp) => {
+  const { categoryId } = req.query;
+  const url =
+    process.env.CATEGORIES_URL + `?_fields=name&include=${categoryId}`;
 
   try {
     const response = await fetch(url);
@@ -304,12 +301,32 @@ module.exports.getCategories = async (req,resp) => {
       throw new Error("Failed to fetch categories");
     }
     const data = await response.json();
-    const category = await data[0].name
+    const category = await data[0].name;
 
     resp.status(200).json(category);
   } catch (error) {
     console.log(err);
     resp.status(500).json({ error: "Internal Server Error" });
   }
-}
+};
 
+// Tags fetching api
+
+module.exports.getTags = async (req, resp) => {
+  const { tagsId } = req.query;
+  const url = process.env.TAGS_URL + `?_fields=name&include=${tagsId}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Failed to fetch categories");
+    }
+    const data = await response.json();
+    const tags = data.map((item) => item.name);
+
+    resp.status(200).json(tags);
+  } catch (error) {
+    console.log(err);
+    resp.status(500).json({ error: "Internal Server Error" });
+  }
+};
