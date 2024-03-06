@@ -290,3 +290,27 @@ module.exports.searchBlogs = async (req, resp) => {
     resp.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+
+// Categories fetching api
+
+module.exports.getCategories = async (req,resp) => {
+  const {categoryId} = req.query;
+  const url = process.env.CATEGORIES_URL + `?_fields=name&include=${categoryId}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Failed to fetch categories");
+    }
+    const data = await response.json();
+    const category = await data[0].name
+
+    resp.status(200).json(category);
+  } catch (error) {
+    console.log(err);
+    resp.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
