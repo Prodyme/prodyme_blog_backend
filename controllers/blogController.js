@@ -38,7 +38,7 @@ module.exports.getBlogs = async (req, resp) => {
     resp.status(500).json({ error: "Internal Server Error" });
   }
 };
-module.exports.getsBlog = async (req, resp) => {
+module.exports.getBlog = async (req, resp) => {
   const { slug } = req.query;
   try {
     const result = await axios.get(process.env.SLUG_URL + `?slug=${slug}`);
