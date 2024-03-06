@@ -1,8 +1,8 @@
 const express = require('express')
-const { getBlogs, getsBlog } = require('../controllers/blogController')
+const { getBlogs, getBlog } = require('../controllers/blogController')
 const routes= express.Router()
 
 routes.get('/',getBlogs)
-routes.get('/blog',getsBlog)
+routes.get('/blog',getBlog)
 
 module.exports=routes
