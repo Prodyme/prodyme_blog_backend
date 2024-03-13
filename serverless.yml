@@ -40,5 +40,5 @@ functions:
       POSTS_URL: https://public-api.wordpress.com/wp/v2/sites/amansamant23.wordpress.com/posts
       CATEGORIES_URL: https://public-api.wordpress.com/wp/v2/sites/amansamant23.wordpress.com/categories
       TAGS_URL: https://public-api.wordpress.com/wp/v2/sites/amansamant23.wordpress.com/tags
-      PRODUCTS_URL: https://efbxl74e21.execute-api.ap-south-1.amazonaws.com/dev
+      PRODUCTS_URL: https://efbxl74e21.execute-api.ap-south-1.amazonaws.com/dev/ecomm/combinedata
       SLUG_URL: https://public-api.wordpress.com/wp/v2/sites/amansamant23.wordpress.com/posts
