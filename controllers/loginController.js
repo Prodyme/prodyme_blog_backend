@@ -1,61 +1,82 @@
-const { generateToken } = require('../generateToken/generateToken')
-const User = require('../models/loginModels')
+const { generateToken } = require('../generateToken/generateToken');
+const User = require('../models/loginModels');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-module.exports.register = async (req, resp) => {
-    const { firstname, lastname, email, password } = req.body
+module.exports.register = async (req, res) => {
+    const { fullname, email, password } = req.body;
 
-    if (!firstname || !lastname || !email || !password) {
-        return resp.status(400).json({ message: "Please enter all fields" })
+    if (!fullname || !email || !password) {
+        return res.status(400).json({ message: "Please enter all fields" });
     }
 
     try {
-        let user = await User.findOne({ email })
+        let user = await User.findOne({ email });
 
         if (user) {
-            return resp.status(400).json({ message: "This account is already exists" })
+            return res.status(400).json({ message: "This account already exists" });
         }
 
         const newUser = new User({
-            firstname,
-            lastname,
+            fullname,
             email,
             password
-        })
+        });
 
-        await newUser.save()
+        await newUser.save();
 
-        return resp.status(201).json({
+        return res.status(201).json({
             _id: newUser.id,
-            firstname: newUser.firstname,
-            lastname: newUser.lastname,
+            fullname: newUser.fullname,
             email: newUser.email,
             message: "User created successfully"
-        })
-    } catch (err) {
-        console.error(err.message)
-        return resp.status(500).send('Server Error')
+        });
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).send('Server Error');
     }
-}
+};
 
-module.exports.login = async (req, resp) => {
-    const { email, password } = req.body
+module.exports.login = async (req, res) => {
+    const { email, password } = req.body;
 
     try {
-        const user = await user.findOne({ email })
+        const user = await User.findOne({ email });
 
-        if (user && (await user.matchPassword(password))) {
-            return resp.json({
-                _id: user._id,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                email: user.email,
-                token: generateToken(user._id)
-            })
-        } else {
-            return resp.status(401).json({ message: "Invalid Email or Password" })
+        if (!user || !(await user.matchPassword(password))) {
+            return res.status(401).json({ message: "Invalid Email or Password" });
         }
-    } catch (err) {
-        console.error(err.message)
-        return resp.status(500).send("Server Error")
+
+        const token = generateToken(user._id);
+
+        res.json({
+            _id: user._id,
+            fullname: user.fullname,
+            email: user.email,
+            token
+        });
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).send("Server Error");
     }
-}
+};
+
+module.exports.getUser = async (req, res) => {
+    try {
+        const token = req.header('Authorization').replace('Bearer ', '');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json({ fullname: user.fullname, email: user.email });
+    } catch (error) {
+        console.error(error);
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ error: 'Invalid token' });
+        }
+        return res.status(401).json({ error: 'Please authenticate.' });
+    }
+};
