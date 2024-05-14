@@ -1,6 +1,8 @@
 const axios = require('axios')
 require('dotenv').config()
 
+
+// fetching the products and filering them based on matching category/subcategory and tags.
 module.exports.getCategoryProducts = async (req, resp) => {
     try {
         const { category, tags } = req.query
